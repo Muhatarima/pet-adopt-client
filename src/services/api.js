@@ -1,9 +1,1 @@
-const BASE_URL = "http://localhost:5000";
-
-export async function getPets() {
-  const res = await fetch(`${BASE_URL}/pets`, {
-    cache: "no-store",
-  });
-
-  return res.json();
-}
+export { BASE_URL, apiFetch, getPet, getPets } from "@/lib/api";

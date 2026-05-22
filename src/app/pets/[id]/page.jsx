@@ -1,29 +1,20 @@
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import AdoptionForm from "@/components/home/AdoptionForm";
-
-async function getPet(id) {
-  const res = await fetch(
-    `http://localhost:5000/pets/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  return res.json();
-}
+import { getPet } from "@/lib/api";
 
 export default async function PetDetailsPage({
   params,
 }) {
-  const pet = await getPet(params.id);
+  const { id } = await params;
+  const pet = await getPet(id);
 
   return (
-    <main>
+    <main className="page-surface">
       <Navbar />
 
       <section className="px-6 py-16">
-        <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-2">
+        <div className="mx-auto grid max-w-6xl gap-10 rounded-lg bg-white p-6 shadow-sm md:grid-cols-2">
           {/* image */}
           <div>
             <img
@@ -32,7 +23,7 @@ export default async function PetDetailsPage({
                 "https://i.ibb.co/4fKcz4V/pet.jpg"
               }
               alt={pet.name}
-              className="h-[500px] w-full rounded-3xl object-cover"
+              className="h-[500px] w-full rounded-lg object-cover"
             />
           </div>
 
@@ -64,6 +55,11 @@ export default async function PetDetailsPage({
                 {pet.age}
               </p>
 
+              <p><span className="font-semibold">Gender:</span> {pet.gender}</p>
+              <p><span className="font-semibold">Health:</span> {pet.healthStatus}</p>
+              <p><span className="font-semibold">Vaccination:</span> {pet.vaccinationStatus}</p>
+              <p><span className="font-semibold">Adoption Fee:</span> ${pet.adoptionFee || 0}</p>
+
               <p>
                 <span className="font-semibold">
                   Location:
@@ -77,6 +73,7 @@ export default async function PetDetailsPage({
                 </span>{" "}
                 {pet.adoptionStatus}
               </p>
+              <p>{pet.description}</p>
             </div>
 
             <AdoptionForm pet={pet} />

@@ -1,6 +1,6 @@
-import Footer from "@/components/shared/Footer";
 import "./globals.css";
-import AppProvider from "@/providers/AppProvider";
+import AppProvider from "../providers/AppProvider";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Pet Adoption Platform",
@@ -11,9 +11,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <AppProvider>{children}
-
-      
+        <AppProvider>
+          {children}
+          <Toaster position="top-center" />
         </AppProvider>
       </body>
     </html>

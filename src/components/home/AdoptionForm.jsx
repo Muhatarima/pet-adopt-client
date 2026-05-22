@@ -1,76 +1,86 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { apiFetch } from "@/lib/api";
+import { useSession } from "@/lib/auth-client";
 
 export default function AdoptionForm({ pet }) {
   const router = useRouter();
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const handleAdoption = async (e) => {
     e.preventDefault();
 
-    const form = e.target;
+    if (!user) {
+      toast.error("Please login before adopting");
+      router.push(`/login?redirect=/pets/${pet._id}`);
+      return;
+    }
 
+    if (user.email === pet.ownerEmail) {
+      toast.error("Owners cannot adopt their own pet");
+      return;
+    }
+
+    if (pet.adoptionStatus === "adopted") {
+      toast.error("This pet is already adopted");
+      return;
+    }
+
+    const form = e.target;
     const adoptionData = {
       petId: pet._id,
       petName: pet.name,
       ownerEmail: pet.ownerEmail,
-      userName: form.userName.value,
-      userEmail: form.userEmail.value,
+      userName: user.name,
+      userEmail: user.email,
       pickupDate: form.pickupDate.value,
       message: form.message.value,
+      requestDate: new Date().toISOString(),
+      status: "pending",
     };
 
-    const res = await fetch(
-      "http://localhost:5000/adoptions",
-      {
+    try {
+      const data = await apiFetch("/adoptions", {
         method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
         body: JSON.stringify(adoptionData),
+      });
+
+      if (data.insertedId || data.acknowledged) {
+        toast.success("Adoption request submitted");
+        form.reset();
+        router.push("/dashboard/my-requests");
       }
-    );
-
-    const data = await res.json();
-
-    if (data.insertedId) {
-      alert("Adoption request submitted");
-      form.reset();
-
-      router.push("/dashboard/my-requests");
+    } catch (error) {
+      toast.error(error.message || "Could not submit request");
     }
   };
 
+  if (!user) {
+    return (
+      <button
+        onClick={() => router.push(`/login?redirect=/pets/${pet._id}`)}
+        className="mt-8 w-full rounded-lg bg-emerald-600 py-4 font-medium text-white hover:bg-emerald-700"
+      >
+        Login to Adopt
+      </button>
+    );
+  }
+
+  const disabled = user.email === pet.ownerEmail || pet.adoptionStatus === "adopted";
+
   return (
-    <form
-      onSubmit={handleAdoption}
-      className="mt-8 space-y-4"
-    >
-      <input
-        defaultValue={pet.name}
-        readOnly
-        className="w-full rounded-xl border p-4"
-      />
-
-      <input
-        name="userName"
-        placeholder="Your Name"
-        className="w-full rounded-xl border p-4"
-        required
-      />
-
-      <input
-        name="userEmail"
-        type="email"
-        placeholder="Your Email"
-        className="w-full rounded-xl border p-4"
-        required
-      />
+    <form onSubmit={handleAdoption} className="mt-8 space-y-4">
+      <input defaultValue={pet.name} readOnly className="w-full rounded-lg border p-4" />
+      <input value={user.name || ""} readOnly className="w-full rounded-lg border p-4" />
+      <input value={user.email || ""} readOnly className="w-full rounded-lg border p-4" />
 
       <input
         name="pickupDate"
         type="date"
-        className="w-full rounded-xl border p-4"
+        className="w-full rounded-lg border p-4"
         required
       />
 
@@ -78,11 +88,14 @@ export default function AdoptionForm({ pet }) {
         name="message"
         placeholder="Message"
         rows="4"
-        className="w-full rounded-xl border p-4"
+        className="w-full rounded-lg border p-4"
       />
 
-      <button className="w-full rounded-xl bg-emerald-600 py-4 text-white">
-        Submit Adoption Request
+      <button
+        disabled={disabled}
+        className="w-full rounded-lg bg-emerald-600 py-4 font-medium text-white hover:bg-emerald-700 disabled:bg-gray-400"
+      >
+        {disabled ? "Adoption Unavailable" : "Submit Adoption Request"}
       </button>
     </form>
   );
