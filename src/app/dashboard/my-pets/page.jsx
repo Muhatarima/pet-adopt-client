@@ -82,6 +82,12 @@ export default function MyPetsPage() {
                 >
                   Delete
                 </button>
+                <Link
+  href={`/dashboard/edit-pet/${pet._id}`}
+  className="rounded-xl bg-blue-500 px-4 py-2 text-white"
+>
+  Edit
+</Link>
               </div>
             </div>
           ))}
