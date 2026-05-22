@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import Container from "./Container";
+import { useSession, signOut } from "@/lib/auth-client";
 
 export default function Navbar() {
+  const { data: session } = useSession();
+
   return (
     <nav className="border-b bg-white">
       <Container>
@@ -22,19 +25,39 @@ export default function Navbar() {
 
             <Link href="/pets">All Pets</Link>
 
-            <Link href="/dashboard/add-pet">Add Pet</Link>
+            {session && (
+              <>
+                <Link href="/dashboard/add-pet">
+                  Add Pet
+                </Link>
 
-            <Link href="/dashboard/my-pets">My Listings</Link>
+                <Link href="/dashboard/my-pets">
+                  My Listings
+                </Link>
 
-            <Link href="/dashboard/my-requests">
-              My Requests
-            </Link>
+                <Link href="/dashboard/my-requests">
+                  My Requests
+                </Link>
+              </>
+            )}
           </div>
 
-          {/* auth */}
-          <button className="rounded-xl bg-emerald-600 px-6 py-3 text-white">
-            Login
-          </button>
+          {/* auth buttons */}
+          {session ? (
+            <button
+              onClick={() => signOut()}
+              className="rounded-xl bg-red-500 px-6 py-3 text-white"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              href="/login"
+              className="rounded-xl bg-emerald-600 px-6 py-3 text-white"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </Container>
     </nav>
