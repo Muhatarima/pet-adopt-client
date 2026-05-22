@@ -25,7 +25,7 @@ export default function MyPetsPage() {
   const loadRequests = async (pet) => {
     setActivePet(pet);
     try {
-      const res = await fetch(`${BASE_URL}/adoptions?petId=${pet._id}`, {
+      const res = await fetch(`${BASE_URL}/adoptions/pet/${pet._id}`, {
         credentials: "include",
       });
       const data = await res.json();
@@ -53,7 +53,7 @@ export default function MyPetsPage() {
     try {
       await apiFetch(`/adoptions/${request._id}`, {
         method: "PATCH",
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status, petId: request.petId }),
       });
 
       if (status === "approved") {
