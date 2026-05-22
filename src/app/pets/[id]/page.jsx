@@ -1,6 +1,6 @@
-```jsx
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import AdoptionForm from "@/components/home/AdoptionForm";
 
 async function getPet(id) {
   const res = await fetch(
@@ -79,44 +79,7 @@ export default async function PetDetailsPage({
               </p>
             </div>
 
-            {/* adoption form */}
-            <form className="mt-8 space-y-4">
-              <input
-                defaultValue={pet.name}
-                readOnly
-                className="w-full rounded-xl border p-4"
-              />
-
-              <input
-                name="userName"
-                placeholder="Your Name"
-                className="w-full rounded-xl border p-4"
-              />
-
-              <input
-                name="userEmail"
-                type="email"
-                placeholder="Your Email"
-                className="w-full rounded-xl border p-4"
-              />
-
-              <input
-                name="pickupDate"
-                type="date"
-                className="w-full rounded-xl border p-4"
-              />
-
-              <textarea
-                name="message"
-                placeholder="Message"
-                rows="4"
-                className="w-full rounded-xl border p-4"
-              />
-
-              <button className="w-full rounded-xl bg-emerald-600 py-4 text-white">
-                Submit Adoption Request
-              </button>
-            </form>
+            <AdoptionForm pet={pet} />
           </div>
         </div>
       </section>
@@ -125,4 +88,3 @@ export default async function PetDetailsPage({
     </main>
   );
 }
-```
