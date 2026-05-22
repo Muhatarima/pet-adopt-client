@@ -1,65 +1,77 @@
-import Image from "next/image";
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
+import PetCard from "@/components/home/PetCard";
+import { getPets } from "@/services/api";
 
-export default function Home() {
+export default async function Home() {
+
+  const pets = await getPets();
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
+    <main>
+      <Navbar />
+
+      <section className="flex min-h-[85vh] items-center justify-center bg-gradient-to-b from-emerald-50 to-white px-6">
+        <div className="max-w-3xl text-center">
+          <h1 className="mb-4 text-5xl font-bold md:text-6xl">
+            Adopt Your Perfect Pet
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mb-6 text-lg text-gray-600">
+            Find loving dogs, cats, birds, and rabbits waiting for a forever home.
           </p>
+          <button className="rounded-xl bg-emerald-600 px-8 py-4 text-white">
+            Adopt Now
+          </button>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="px-6 py-20">
+  <h2 className="mb-10 text-center text-4xl font-bold">
+    Featured Pets
+  </h2>
+
+  <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {pets.slice(0, 6).map((pet) => (
+      <PetCard key={pet._id} pet={pet} />
+    ))}
+  </div>
+</section>
+
+      <section className="px-6 py-20">
+        <h2 className="mb-10 text-center text-4xl font-bold">Why Adopt?</h2>
+        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+          {["Save a life", "Find a loyal friend", "Support shelters"].map((item) => (
+            <div key={item} className="rounded-2xl border p-8 shadow-sm">
+              <h3 className="mb-3 text-2xl font-semibold">{item}</h3>
+              <p className="text-gray-600">
+                Adoption gives pets a second chance and brings joy to your family.
+              </p>
+            </div>
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section className="bg-emerald-50 px-6 py-20">
+        <h2 className="mb-10 text-center text-4xl font-bold">Pet Care Tips</h2>
+        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+          {["Regular vet visits", "Healthy food", "Daily playtime"].map((item) => (
+            <div key={item} className="rounded-2xl bg-white p-8 shadow-sm">
+              <h3 className="mb-3 text-xl font-semibold">{item}</h3>
+              <p className="text-gray-600">
+                Small daily care habits help pets stay happy, active, and healthy.
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-6 py-20">
+        <h2 className="mb-6 text-center text-4xl font-bold">Success Stories</h2>
+        <p className="mx-auto max-w-3xl text-center text-gray-600">
+          Hundreds of pets have found safe, caring homes through PetAdopt.
+        </p>
+      </section>
+
+      <Footer />
+    </main>
   );
 }
