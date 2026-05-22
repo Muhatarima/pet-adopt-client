@@ -22,10 +22,11 @@ export default function PetCard({ pet }) {
       <p className="mt-1 text-sm text-gray-500">
         {pet.location}
       </p>
-
-      <button className="mt-5 rounded-xl bg-emerald-600 px-5 py-3 text-white">
-        View Details
-      </button>
+<Link href={`/pets/${pet._id}`}>
+  <button className="mt-5 rounded-xl bg-emerald-600 px-5 py-3 text-white">
+    View Details
+  </button>
+</Link>
     </div>
   );
 }
