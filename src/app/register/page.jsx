@@ -17,19 +17,10 @@ export default function RegisterPage() {
       return toast.error("Passwords do not match");
     }
 
-    const password = form.password.value;
-    if (password.length < 6) {
-      return toast.error("Password must be at least 6 characters");
-    }
-
-    if (!/[A-Z]/.test(password) || !/[a-z]/.test(password)) {
-      return toast.error("Password needs uppercase and lowercase letters");
-    }
-
     const { error } = await signUp.email({
       name: form.name.value,
       email: form.email.value,
-      password,
+      password: form.password.value,
       image: form.photo.value,
     });
 
@@ -42,18 +33,18 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="page-surface flex min-h-screen items-center justify-center px-6 py-10">
-      <div className="soft-card w-full max-w-md rounded-lg p-8">
+    <main className="flex min-h-screen items-center justify-center bg-emerald-50 px-6">
+      <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow">
         <h1 className="mb-6 text-center text-4xl font-bold">Register</h1>
 
         <form onSubmit={handleRegister} className="space-y-4">
-          <input name="name" className="w-full rounded-lg border p-4" placeholder="Name" required />
-          <input name="email" className="w-full rounded-lg border p-4" type="email" placeholder="Email" required />
-          <input name="photo" className="w-full rounded-lg border p-4" placeholder="Photo URL" />
-          <input name="password" className="w-full rounded-lg border p-4" type="password" placeholder="Password" required />
-          <input name="confirmPassword" className="w-full rounded-lg border p-4" type="password" placeholder="Confirm Password" required />
+          <input name="name" className="w-full rounded-xl border p-4" placeholder="Name" required />
+          <input name="email" className="w-full rounded-xl border p-4" type="email" placeholder="Email" required />
+          <input name="photo" className="w-full rounded-xl border p-4" placeholder="Photo URL" />
+          <input name="password" className="w-full rounded-xl border p-4" type="password" placeholder="Password" required />
+          <input name="confirmPassword" className="w-full rounded-xl border p-4" type="password" placeholder="Confirm Password" required />
 
-          <button className="w-full rounded-lg bg-emerald-600 py-4 font-medium text-white hover:bg-emerald-700">
+          <button className="w-full rounded-xl bg-emerald-600 py-4 text-white">
             Register
           </button>
         </form>

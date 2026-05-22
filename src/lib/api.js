@@ -20,8 +20,13 @@ export async function apiFetch(path, options = {}) {
 }
 
 export async function getPets(query = "") {
-  const res = await fetch(`${BASE_URL}/pets${query}`, { cache: "no-store" });
-  return res.json();
+  try {
+    const res = await fetch(`${BASE_URL}/pets${query}`, { cache: "no-store" });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
 }
 
 export async function getPet(id) {
