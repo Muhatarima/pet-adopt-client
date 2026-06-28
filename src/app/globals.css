@@ -34,6 +34,14 @@ input,
 select,
 textarea {
   outline: none;
+  color: #111827;
+  background-color: #ffffff;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6b7280;
+  opacity: 1;
 }
 
 input:focus,

@@ -29,10 +29,18 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = async () => {
-    await signIn.social({
-      provider: "google",
-      callbackURL: redirect,
-    });
+    try {
+      const { error } = await signIn.social({
+        provider: "google",
+        callbackURL: redirect,
+      });
+
+      if (error) {
+        toast.error(error.message || "Google login is not configured");
+      }
+    } catch {
+      toast.error("Google login is not configured yet");
+    }
   };
 
   return (
