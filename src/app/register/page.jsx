@@ -45,7 +45,7 @@ export default function RegisterPage() {
   return (
     <main className="page-surface flex min-h-screen items-center justify-center px-6 py-10">
       <div className="soft-card w-full max-w-md rounded-lg p-8">
-        <h1 className="mb-6 text-center text-4xl font-bold">Register</h1>
+        <h1 className="mb-6 text-center text-4xl font-bold text-slate-950">Register</h1>
 
         <form onSubmit={handleRegister} className="space-y-4">
           <input name="name" className="w-full rounded-lg border p-4" placeholder="Name" required />

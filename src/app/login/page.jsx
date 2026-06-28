@@ -46,7 +46,7 @@ export default function LoginPage() {
   return (
     <main className="page-surface flex min-h-screen items-center justify-center px-6">
       <div className="soft-card w-full max-w-md rounded-lg p-8">
-        <h1 className="mb-6 text-center text-4xl font-bold">Login</h1>
+        <h1 className="mb-6 text-center text-4xl font-bold text-slate-950">Login</h1>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <input
@@ -72,7 +72,7 @@ export default function LoginPage() {
 
         <button
           onClick={handleGoogleLogin}
-          className="mt-4 w-full rounded-lg border py-4 font-medium hover:border-emerald-300 hover:bg-emerald-50"
+          className="mt-4 w-full rounded-lg border border-emerald-300 bg-white py-4 font-medium text-slate-800 hover:border-emerald-500 hover:bg-emerald-50"
         >
           Continue with Google
         </button>
