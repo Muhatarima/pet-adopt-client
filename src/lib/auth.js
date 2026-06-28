@@ -19,6 +19,13 @@ const googleProvider =
       }
     : undefined;
 
+const trustedOrigins = [
+  "http://localhost:3000",
+  "https://pet-adopt-client-xi.vercel.app",
+  process.env.BETTER_AUTH_URL,
+  process.env.NEXT_PUBLIC_AUTH_URL,
+].filter(Boolean);
+
 export const auth = betterAuth({
   database: mongodbAdapter(db),
   emailAndPassword: {
@@ -26,5 +33,6 @@ export const auth = betterAuth({
   },
   socialProviders: googleProvider,
   secret: process.env.BETTER_AUTH_SECRET,
-  baseURL: process.env.BETTER_AUTH_URL,
+  baseURL: process.env.BETTER_AUTH_URL || "https://pet-adopt-client-xi.vercel.app",
+  trustedOrigins,
 });
