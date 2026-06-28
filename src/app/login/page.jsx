@@ -30,16 +30,27 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     try {
-      const { error } = await signIn.social({
-        provider: "google",
-        callbackURL: redirect,
+      const response = await fetch("/api/auth/sign-in/social", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          provider: "google",
+          callbackURL: redirect,
+        }),
       });
 
-      if (error) {
-        toast.error(error.message || "Google login is not configured");
+      const data = await response.json();
+
+      if (!response.ok || !data?.url) {
+        toast.error(data?.message || "Google login is not configured");
+        return;
       }
-    } catch {
-      toast.error("Google login is not configured yet");
+
+      window.location.href = data.url;
+    } catch (error) {
+      toast.error(error?.message || "Google login failed. Please try again.");
     }
   };
 
